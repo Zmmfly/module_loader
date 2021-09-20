@@ -1,0 +1,5 @@
+bin/*
+libs/*
+modules/*
+build/*
+.xmake
