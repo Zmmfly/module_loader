@@ -6,6 +6,16 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+bool impl_prio_comp_asc(mod_impl_item_t &a, mod_impl_item_t &b)
+{
+    return a.prio < b.prio;
+}
+
+bool impl_prio_comp_dsc(mod_impl_item_t &a, mod_impl_item_t &b)
+{
+    return a.prio > b.prio;
+}
+
 int dir_walk(const char *path, walk_fn_t fn, void *arg)
 {
     std::string base_path, file_path;
