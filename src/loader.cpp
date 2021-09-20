@@ -64,16 +64,16 @@ int main(int argc, char **argv)
     #ifdef USE_LIBS
     dir_walk(LIBS_PATH, dlopen_walk, &libs_vec);
     dlsym_walk(libs_vec, libs_impl_lst);
+    libs_impl_lst.sort(impl_prio_comp_asc);
     libs_lst = &libs_impl_lst;
     #endif
 
     #ifdef USE_MODS
     dir_walk(MODS_PATH, dlopen_walk, &mods_vec);
     dlsym_walk(mods_vec, mods_impl_lst);
+    mods_impl_lst.sort(impl_prio_comp_asc);
     mods_lst = &mods_impl_lst;
     #endif
-
-    //TODO sort list
 
     // Set list and startup
     #ifdef USE_LIBS
@@ -100,7 +100,11 @@ int main(int argc, char **argv)
 
 void exit_handler(int signum)
 {
+    if (signum == SIGINT) printf("\n");
+    printf("Exit with sig: %d\n", signum);
+
     #ifdef USE_MODS
+    mods_impl_lst.sort(impl_prio_comp_dsc);
     for (auto it:mods_impl_lst) {
         ((mods_impl*)it.ptr)->stop();
         it.deleter(it.ptr);
@@ -111,6 +115,7 @@ void exit_handler(int signum)
     #endif
 
     #ifdef USE_LIBS
+    libs_impl_lst.sort(impl_prio_comp_dsc);
     for (auto it:libs_impl_lst) {
         ((mods_impl*)it.ptr)->stop();
         it.deleter(it.ptr);
@@ -119,9 +124,6 @@ void exit_handler(int signum)
         dlclose(*it);
     }
     #endif
-
-    if (signum == SIGINT) printf("\n");
-    printf("Exit with sig: %d\n", signum);
     exit(0);
 }
 
