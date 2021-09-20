@@ -32,7 +32,7 @@ class mods_impl {
         virtual std::string name() = 0;
         virtual bool ver_check(uint8_t major, uint8_t minor, uint8_t patch) = 0;
         virtual bool set_logger(log_fn_t fn) = 0;
-        virtual bool set_log_level(uint8_t lvl) = 0;
+        virtual bool set_log_lvl(uint8_t lvl) = 0;
         virtual bool set_lst(mods_impl_lst_t *libs, mods_impl_lst_t *mods) = 0;
         virtual bool startup() = 0;
         virtual bool stop() = 0;
